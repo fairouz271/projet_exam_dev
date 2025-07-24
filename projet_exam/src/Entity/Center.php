@@ -170,7 +170,7 @@ class Center
         return $this->adress;
     }
 
-    public function setAdress(Adress $adress): static
+    public function setAddress(Adress $adress): static
     {
         $this->adress = $adress;
 
