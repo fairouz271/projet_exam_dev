@@ -3,25 +3,38 @@
 {% block title %}Centre de loisirs{% endblock %}
 
 {% block body %}
-    <div class="example-wrapper">
-        <h1>Centre de loisirs</h1>
-        <ul>
-            {% for center in bestCenter %}
-                <li>
-                    <strong>{{ center.name }}-{{ center.id }}</strong><br>
-                    Prix : {{ center.price }} €<br>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Centres de loisirs</h1>
 
-                    <ul>
-                        {% for activity in center.activity %}
-                            <li>{{ activity.name }}</li>
-                        {% else %}
-                            <li>Aucune activité</li>
-                        {% endfor %}
-                    </ul>
-                </li>
+        <div class="row">
+            {% for center in bestCenter %}
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{ asset(center.imagePath) }}" class="card-img-top" alt="Image du centre">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ center.name }}</h5>
+                            <p class="card-text"> {{ center.description }} </p>
+
+                            <p class="mb-1">Activités :</p>
+                            <ul>
+                                {% for activity in center.activities %}
+                                    <li>{{ activity.name }}</li>
+                                {% else %}
+                                    <li>Aucune activité</li>
+                                {% endfor %}
+                            </ul>
+
+                            <p><a class="link-opacity-10-hover" href="{{ path('app_show_center', { id: center.id }) }}">lire la suite </a></p>
+                        </div>
+                    </div>
+                </div>
             {% else %}
-                <li>Aucun centre trouvé.</li>
+                <div class="col-12">
+                    <p>Aucun centre trouvé.</p>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
+
+    <div id="map"></div>
 {% endblock %}

@@ -33,10 +33,11 @@ final class CenterFactory extends PersistentProxyObjectFactory
     {
         return [
             'adress' =>  AdressFactory::random(),
-            'imagePath' => "https://picsum.photos/200/300",
+            'imagePath' => 'https://picsum.photos/200/300?random=' . self::faker()->uuid(),
             'name' => self::faker()->text(50),
-            'phoneNumber' => self::faker()->phoneNumber(), // "07## ## ## ##"
+            'phoneNumber' => self::faker()->phoneNumber(),
             'schedules' => self::faker()->paragraph(),
+            'description' => self::faker()->paragraph(),
 //            'schedules' => [
 //        'lundi'     => self::faker()->boolean(90) ? '08:00 - 18:00' : 'Fermé',
 //        'mardi'     => self::faker()->boolean(90) ? '08:00 - 18:00' : 'Fermé',

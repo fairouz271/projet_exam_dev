@@ -26,8 +26,6 @@ class Center
     private ?string $schedules = null;
 
 
-
-
     #[ORM\Column(length: 255)]
     private ?string $imagePath = null;
 
@@ -101,7 +99,6 @@ class Center
     }
 
 
-
     public function getImagePath(): ?string
     {
         return $this->imagePath;
@@ -141,12 +138,12 @@ class Center
     /**
      * @return Collection<int, Comment>
      */
-    public function getComment(): Collection
+    public function getComments(): Collection
     {
         return $this->comments;
     }
 
-    public function addComment(Comment $comment): static
+    public function addComments(Comment $comment): static
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
@@ -183,7 +180,7 @@ class Center
     /**
      * @return Collection<int, Activity>
      */
-    public function getActivity(): Collection
+    public function getActivities(): Collection
     {
         return $this->activities;
     }
@@ -200,6 +197,16 @@ class Center
     public function removeActivity(Activity $activity): static
     {
         $this->activities->removeElement($activity);
+        return $this;
+    }
+
+    public function setActivities(iterable $activities): static
+    {
+        $this->activities = new ArrayCollection();
+
+        foreach ($activities as $activity) {
+            $this->addActivity($activity);
+        }
 
         return $this;
     }

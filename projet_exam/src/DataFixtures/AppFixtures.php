@@ -29,6 +29,7 @@ class AppFixtures extends Fixture
 
         CenterFactory::createMany(10, [
             'adress' => AdressFactory::new(),
+            'activities' => ActivityFactory::randomRange(1, 3),
         ]);
     CommentFactory::createMany(200);
 
