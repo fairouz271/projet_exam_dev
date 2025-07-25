@@ -8,8 +8,7 @@
     <div class="example-wrapper">
         <img src="{{ asset(center.imagePath) }}" class="card-img-top" alt="Image du centre">
         <h1> {{ center.name }}</h1>
-        <p>
-
+        <p>{{ center.description }}<br>
             Moyenne des notes :
             {% if averageRating != null %}
                 {{ averageRating }} / 5
@@ -18,7 +17,7 @@
             {% endif %}
 
         </p>
-        <div> {{ center.description }}<br>
+        <div>
             <strong>Le prix d'entrée est:</strong>{{ center.price }}€<br>
 
             <strong>Les horaires :</strong> {{ center.schedules }}<br>
@@ -44,18 +43,31 @@
 
 {% block javascripts %}
     {{ parent() }}
-<script>
-    var map = L.map('map').setView([45.7772, 3.0870], 8);
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-    {% if center.adress and center.adress.altitude !=null and center.adress.longitude !=null %}
-    L.marker([{{ center.adress.altitude }}, {{ center.adress.longitude }}]).addTo(map)
-        .bindTooltip("{{ center.name|e('js') }}", { permanent: false, direction: "top" });
+    <script>
+        var map = L.map('map').setView([45.7772, 3.0870], 8);
 
-    {% endif %}
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href=""></a> '
+        }).addTo(map);
+        {% if center.adress and center.adress.altitude !=null and center.adress.longitude !=null %}
+        L.marker([{{ center.adress.altitude }}, {{ center.adress.longitude }}]).addTo(map)
+            .bindTooltip("{{ center.name }}", {permanent: false, direction: "top"});
 
-</script>
+        {% endif %}
+
+    </script>
+
+    {% block form %}
+        <h3>Donner votre avis ! </h3>
+        {{ form_start(form) }}
+        {{ form_row(form.content) }}
+        {{ form_row(form.rating) }}
+        {{ form_row(form.submit) }}
+        {{ form_end(form) }}
+    {% endblock %}
+
 {% endblock %}
+
+
 
