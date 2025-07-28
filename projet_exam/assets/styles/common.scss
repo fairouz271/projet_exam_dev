@@ -1,4 +1,9 @@
-
 body {
-    background-color: $default-background-color;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: $accessible-colors["accessible-text-dark"];
+    background-color: $accessible-colors["accessible-bg-light"];
 }
+//body {
+//    background-color: $default-background-color;
+//}

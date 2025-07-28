@@ -27,18 +27,35 @@ final class CenterController extends AbstractController
     {
         $center = $centerRepository->findOneBy(['id' => $id]);
         if ($center === null) {
-            $this->addFlash('danger', 'Ce centre n\existe pas !');
+            $this->addFlash('danger', 'Ce centre n\'existe pas !');
             return $this->redirectToRoute('app_home');
         }
         $comment = new Comment();
+        $user = $this->getUser();
+
+
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
+
+
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$user) {
+                $this->addFlash('warning', 'Vous devez être connecté pour commenter.');
+                return $this->redirectToRoute('app_login');
+            }
+            $comment->setPublicationDate(new \DateTime());
+            $comment->setUser($user);
+            $comment->setCenter($center);
+
+
             $em->persist($comment);
             $em->flush();
 
-            return $this->redirectToRoute('app_chow_center', ['id' => $id]);
+            $this->addFlash('success', 'Ajout de commentaire réussie !');
+
+
+            return $this->redirectToRoute('app_show_center', ['id' => $id]);
         }
         $averageRating = $commentRepository->findAverageRatingByCenter($center);
 

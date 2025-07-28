@@ -3,8 +3,6 @@
 {% block title %}Hello CenterController!{% endblock %}
 
 {% block body %}
-
-
     <div class="example-wrapper">
         <img src="{{ asset(center.imagePath) }}" class="card-img-top" alt="Image du centre">
         <h1> {{ center.name }}</h1>
@@ -15,15 +13,12 @@
             {% else %}
                 Il n'y a pas de notes encore !
             {% endif %}
-
         </p>
         <div>
             <strong>Le prix d'entrée est:</strong>{{ center.price }}€<br>
-
             <strong>Les horaires :</strong> {{ center.schedules }}<br>
             <strong>Le numero de téléphone :</strong> {{ center.phoneNumber }}<br>
         </div>
-
 
         <div class="row">
             {% for comment in comments %}
@@ -34,11 +29,22 @@
             {% endfor %}
         </div>
 
+        <h3 class="mt-4">Donner votre avis ! </h3>
+
+        {{ form_start(form) }}
+        {{ form_row(form.content) }}
+        {{ form_row(form.rating) }}
+        {{ form_row(form.submit) }}
+        {{ form_end(form) }}
+
+        {% if not app.user %}
+            <p>
+                <a href="{{ path('app_login') }}">Connectez-vous</a> pour laisser un commentaire.
+            </p>
+        {% endif %}
+
+        <a href="{{ path('app_home') }}" class="btn btn-secondary mt-3">Retour</a>
     </div>
-    <div id="map"></div>
-
-    <a href="{{ path('app_home') }}" class="btn btn-secondary mt-3">Retour</a>
-
 {% endblock %}
 
 {% block javascripts %}
@@ -48,26 +54,12 @@
         var map = L.map('map').setView([45.7772, 3.0870], 8);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href=""></a> '
+            attribution: '&copy; <a href=""></a>'
         }).addTo(map);
-        {% if center.adress and center.adress.altitude !=null and center.adress.longitude !=null %}
+
+        {% if center.adress and center.adress.altitude != null and center.adress.longitude != null %}
         L.marker([{{ center.adress.altitude }}, {{ center.adress.longitude }}]).addTo(map)
             .bindTooltip("{{ center.name }}", {permanent: false, direction: "top"});
-
         {% endif %}
-
     </script>
-
-    {% block form %}
-        <h3>Donner votre avis ! </h3>
-        {{ form_start(form) }}
-        {{ form_row(form.content) }}
-        {{ form_row(form.rating) }}
-        {{ form_row(form.submit) }}
-        {{ form_end(form) }}
-    {% endblock %}
-
 {% endblock %}
-
-
-

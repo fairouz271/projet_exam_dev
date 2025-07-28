@@ -19,24 +19,28 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('content', null, [
+                'label' => 'Votre commentaire',
                     'attr' => [
-                        'class' => 'form-content'
+                        'class' => 'form-control'
         ]
     ])
-            ->add('rating', NumberType::class, [
+            ->add('rating', NumberType::class,
+                ['label'=> 'Votre note',
                 'attr' => [
                     'class' => 'form-control',
-                ],
-                'constraints' => [
-                    new Range(min: 0, max: 5)
+                    'min' => 0,
+                    'max' => 5,
+                    'step' => 0.5
                 ]
+
+
             ] )
 
 
             ->add('submit', SubmitType::class, [
                 'label' => 'Ajouter',
                 'attr' => [
-                    'class' => 'btn btn-primary',
+                    'class' => 'btn btn-primary mt-3',
                     ]
             ])
         ;
