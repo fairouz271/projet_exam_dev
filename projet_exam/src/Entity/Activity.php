@@ -28,7 +28,7 @@ class Activity
     /**
      * @var Collection<int, Center>
      */
-    #[ORM\ManyToMany(targetEntity: Center::class, mappedBy: 'Activity')]
+    #[ORM\ManyToMany(targetEntity: Center::class, mappedBy: 'activities')]
     private Collection $centers;
 
     public function __construct()
