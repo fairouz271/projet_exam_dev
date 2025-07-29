@@ -36,23 +36,6 @@
         </div>
     </div>
 
-    <div id="map"></div>
-    {% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-
-        var map = L.map('map').setView([45.7772, 3.0870], 9);
-
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href=""></a> '
-        }).addTo(map);
-        {% for center in bestCenter %}
-        {% if center.adress and center.adress.altitude !=null and center.adress.longitude !=null %}
-        L.marker([{{ center.adress.altitude }}, {{ center.adress.longitude }}]).addTo(map)
-            .bindTooltip("{{ center.name }}", { permanent: false, direction: "top" });
-
-        {% endif %}
-        {% endfor %}
-    </script>
+    <div id="map" data-map-data="{{ getSerializedPoints(bestCenter) }}"></div>
 {% endblock %}
+

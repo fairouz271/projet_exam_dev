@@ -30,6 +30,11 @@ Encore
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
 
+    .copyFiles({
+        from: './node_modules/leaflet/dist/images',
+        to: 'images/leaflet/[name].[ext]'
+    })
+
     /*
      * FEATURE CONFIG
      *

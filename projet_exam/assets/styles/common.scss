@@ -1,9 +1,11 @@
 body {
     font-size: 1.1rem;
     line-height: 1.6;
-    color: $accessible-colors["accessible-text-dark"];
-    background-color: $accessible-colors["accessible-bg-light"];
+    color: $default-color;
+    background-color: $default-background-color;
 }
-//body {
-//    background-color: $default-background-color;
-//}
+
+#map {
+    height: 400px;
+    width: 100%;
+}

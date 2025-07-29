@@ -1,2 +1,4 @@
-import '../styles/app.scss';
+
+import './leaflet';
+import './alert';
 
