@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commentaires - {{ center.name }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Tous les commentaires pour {{ center.name }}</h1>
+
+        <div class="row">
+            {% for comment in comments %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <p class="card-text">{{ comment.content }}</p>
+                            <p class="card-text">
+                                <strong>Note :</strong> {{ comment.rating }} / 5
+                            </p>
+                            <p class="text-muted small">
+                                Posté le {{ comment.publicationDate|date('d/m/Y') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Aucun commentaire à afficher.</p>
+            {% endfor %}
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ path('app_show_center', { id: center.id }) }}" class="btn btn-secondary">
+                Retour à la fiche du centre
+            </a>
+        </div>
+    </div>
+{% endblock %}

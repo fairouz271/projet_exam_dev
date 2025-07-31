@@ -4,30 +4,41 @@
 
 {% block body %}
     <div class="container my-5">
-        <h1 class="text-center mb-4">Centres de loisirs</h1>
-
+        <h1 class="text-center mb-4">Les centres de loisirs les plus frecontés a Cleront Ferrand</h1>
+<p>Faites vivre a vos enfants des moments magique en Auvergne,<br>
+entre aventures en plein air et jeux en espace couvert !</p>
         <div class="row">
+            <h2>Nos recommandations de centres de loisirs:</h2>
             {% for center in bestCenter %}
                 <div class="col-12 col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <img src="{{ asset(center.imagePath) }}" class="card-img-top" alt="Image du centre">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ center.name }}</h5>
-                            <p class="card-text"> {{ center.description }} </p>
+                    <div class="card h-100 center-card">
+                        <img src="{{ asset(center.imagePath) }}" class="card-img-top center-card-img" alt="Image du centre">
 
-                            <p class="mb-1">Activités :</p>
-                            <ul>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title center-title">{{ center.name }}</h5>
+
+                            <p class="card-text center-description">
+                                {{ center.description|length > 120 ? center.description|slice(0, 120) ~ '...' : center.description }}
+                            </p>
+
+                            <p class="center-activities-title">Activités :</p>
+                            <ul class="center-activities-list">
                                 {% for activity in center.activities %}
                                     <li>{{ activity.name }}</li>
                                 {% else %}
-                                    <li>Aucune activité</li>
+                                    <li class="no-activity">Aucune activité</li>
                                 {% endfor %}
                             </ul>
 
-                            <p><a class="link-opacity-10-hover" href="{{ path('app_show_center', { id: center.id }) }}">lire la suite </a></p>
+                            <div class="mt-auto">
+                                <a href="{{ path('app_show_center', { id: center.id }) }}" class="btn btn-outline-primary btn-sm center-more-link">
+                                    Lire la suite
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             {% else %}
                 <div class="col-12">
                     <p>Aucun centre trouvé.</p>
@@ -35,7 +46,7 @@
             {% endfor %}
         </div>
     </div>
-
+<h2>Localisez les centres de loisirs prés de chez vous!</h2>
     <div id="map" data-map-data="{{ getSerializedPoints(bestCenter) }}"></div>
 {% endblock %}
 

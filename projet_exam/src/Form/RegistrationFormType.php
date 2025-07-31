@@ -33,6 +33,7 @@ class RegistrationFormType extends AbstractType
                     'class' => 'form-control']
                 ])
             ->add('agreeTerms', CheckboxType::class, [
+                'label' => 'J’accepte les conditions générales d’utilisation',
                 'attr' => [
                     'class' => 'form-check-input'],
                 'label_attr' => [
@@ -41,7 +42,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'Vous devez accepter les conditions pour continuer.',
                     ]),
                 ],
             ])
@@ -54,7 +55,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Please enter a password',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min' => 5,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         'max' => 4096,
                     ]),

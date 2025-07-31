@@ -15,7 +15,29 @@ use Doctrine\ORM\EntityManager;
 
 final class CenterController extends AbstractController
 {
-    #[Route('/center/{id}', name: 'app_show_center')]
+    #[Route('/center/{id}/comments', name: 'center_all_comments', requirements: ['id' => '\d+'])]
+    public function allComments(
+        int $id,
+        CenterRepository $centerRepository,
+        CommentRepository $commentRepository
+    ): Response {
+        $center = $centerRepository->find($id);
+        if (!$center) {
+            $this->addFlash('danger', 'Ce centre n\'existe pas.');
+            return $this->redirectToRoute('app_home');
+        }
+
+        $comments = $commentRepository->findBy(
+            ['center' => $center],
+            ['publicationDate' => 'DESC']
+        );
+
+        return $this->render('center/all_comments.html.twig', [
+            'center' => $center,
+            'comments' => $comments,
+        ]);
+    }
+    #[Route('/center/{id}', name: 'app_show_center',requirements: ['id' => '\d+'])]
     public function show(
         int                    $id,
         Request                $request,

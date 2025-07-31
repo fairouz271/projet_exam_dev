@@ -1,11 +1,89 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
-    font-size: 1.1rem;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 1rem;
     line-height: 1.6;
-    color: $default-color;
-    background-color: $default-background-color;
+    color:  #ffffff;
+    background-color: #003366;
+    margin: 0 ;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    }
+nav.navbar {
+    width: 100% ;
+    margin: 0 ;
+    padding: 0 ;
+}
+a, button {
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: 0.5rem 1rem;
+}
+
+h1, h2, h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.3;
 }
 
 #map {
     height: 400px;
     width: 100%;
 }
+.container.py-4 {
+    flex-grow: 1;
+}
+footer {
+    flex-shrink: 0;
+
+}
+footer > .container-fluid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* logo à gauche, bouton à droite */
+    height: 60px; /* même hauteur que navbar */
+    padding: 0 20px;
+}
+
+/* Logo à gauche */
+footer img {
+    height: 40px;
+}
+
+/* Conteneur des réseaux sociaux centré */
+footer .social-links {
+    display: flex;
+    gap: 15px;
+    flex-grow: 1;        /* prend tout l’espace entre logo et bouton */
+    justify-content: center; /* centre les liens */
+    color: #000;         /* couleur des icônes */
+}
+
+/* Style liens réseaux sociaux */
+footer .social-links a {
+    color: inherit;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+/* Bouton connexion à droite */
+footer .btn-connexion {
+    margin-left: auto;
+}
+.custom-navbar {
+    background-color: #003366 !important;
+    color: white !important;
+}
+
+.custom-footer {
+    background-color: #003366 !important;
+    color: white !important;
+}
+

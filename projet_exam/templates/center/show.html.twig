@@ -9,7 +9,7 @@
         <p>{{ center.description }}<br>
             Moyenne des notes :
             {% if averageRating != null %}
-                {{ averageRating }} / 5
+                {{ averageRating|number_format(1, '.', '') }} / 5
             {% else %}
                 Il n'y a pas de notes encore !
             {% endif %}
@@ -20,14 +20,37 @@
             <strong>Le numero de téléphone :</strong> {{ center.phoneNumber }}<br>
         </div>
 
+{#        <div class="row">#}
+{#            {% for comment in comments %}#}
+{#                <div class="col-lg-3">#}
+{#                    <p>{{ comment.content }}</p>#}
+{#                    <p>{{ comment.rating }}</p>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+
+        <h3 class="mt-4">Commentaires</h3>
         <div class="row">
-            {% for comment in comments %}
-                <div class="col-lg-3">
-                    <p>{{ comment.content }}</p>
-                    <p>{{ comment.rating }}</p>
+            {% for comment in comments|slice(0, 3) %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <p class="card-text">{{ comment.content }}</p>
+                            <p class="card-text">
+                                <strong>Note :</strong> {{ comment.rating }} / 5
+                            </p>
+                        </div>
+                    </div>
                 </div>
             {% endfor %}
         </div>
+        <div class="text-end">
+            <a href="{{ path('center_all_comments', {id: center.id}) }}" class="btn btn-outline-primary">
+                Voir tous les commentaires
+            </a>
+        </div>
+
+
 
         <h3 class="mt-4">Donner votre avis ! </h3>
 

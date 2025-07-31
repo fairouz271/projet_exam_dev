@@ -13,7 +13,7 @@ final class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(CenterRepository $centerRepository): Response
     {
-        $bestCenter = $centerRepository->findBy([], ['name' => 'DESC'], 9);
+        $bestCenter = $centerRepository->findBy([], ['name' => 'DESC'], 8);
 
         return $this->render('home/index.html.twig', [
             'bestCenter' => $bestCenter
