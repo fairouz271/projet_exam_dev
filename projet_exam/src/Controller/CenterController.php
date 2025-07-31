@@ -12,14 +12,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManager;
+use Knp\Component\Pager\PaginatorInterface;
 
 final class CenterController extends AbstractController
 {
     #[Route('/center/{id}/comments', name: 'center_all_comments', requirements: ['id' => '\d+'])]
     public function allComments(
         int $id,
+        Request $request,
         CenterRepository $centerRepository,
-        CommentRepository $commentRepository
+        CommentRepository $commentRepository,
+        PaginatorInterface $paginator
     ): Response {
         $center = $centerRepository->find($id);
         if (!$center) {
@@ -27,9 +30,17 @@ final class CenterController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $comments = $commentRepository->findBy(
-            ['center' => $center],
-            ['publicationDate' => 'DESC']
+        $query = $commentRepository->createQueryBuilder('c')
+            ->where('c.center = :center')
+            ->setParameter('center', $center)
+            ->orderBy('c.publicationDate', 'DESC')
+            ->getQuery();
+
+
+        $comments = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            6
         );
 
         return $this->render('center/all_comments.html.twig', [
