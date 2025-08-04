@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Center;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -49,11 +50,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
-
+    #[ORM\ManyToMany(targetEntity: Center::class)]
+    private Collection $favoriteCenters;
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->favoriteCenters = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -88,7 +92,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -193,4 +196,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public function getFavoriteCenters(): Collection
+    {
+        return $this->favoriteCenters;
+    }
+
+    public function addFavoriteCenter(Center $center): static
+    {
+        if (!$this->favoriteCenters->contains($center)) {
+            $this->favoriteCenters->add($center);
+        }
+        return $this;
+    }
+
+    public function removeFavoriteCenter(Center $center): static
+    {
+        $this->favoriteCenters->removeElement($center);
+        return $this;
+    }
 }
+
+

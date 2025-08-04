@@ -4,15 +4,18 @@
 
 {% block body %}
     <div class="container my-5">
-        <h1 class="text-center mb-4">Les centres de loisirs les plus frecontés a Cleront Ferrand</h1>
-<p>Faites vivre a vos enfants des moments magique en Auvergne,<br>
-entre aventures en plein air et jeux en espace couvert !</p>
+        <h1 class="text-center mb-4">Les centres de loisirs les plus fréquentés à Clermont-Ferrand</h1>
+        <p>
+            Faites vivre à vos enfants des moments magiques en Auvergne,<br />
+            entre aventures en plein air et jeux en espace couvert !
+        </p>
+
         <div class="row">
-            <h2>Nos recommandations de centres de loisirs:</h2>
+            <h2>Nos recommandations de centres de loisirs :</h2>
             {% for center in bestCenter %}
                 <div class="col-12 col-md-6 col-lg-4 mb-4">
                     <div class="card h-100 center-card">
-                        <img src="{{ asset(center.imagePath) }}" class="card-img-top center-card-img" alt="Image du centre">
+                        <img src="{{ asset(center.imagePath) }}" class="card-img-top center-card-img" alt="Image du centre" />
 
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title center-title">{{ center.name }}</h5>
@@ -38,15 +41,14 @@ entre aventures en plein air et jeux en espace couvert !</p>
                         </div>
                     </div>
                 </div>
-
             {% else %}
                 <div class="col-12">
                     <p>Aucun centre trouvé.</p>
                 </div>
             {% endfor %}
         </div>
-    </div>
-<h2>Localisez les centres de loisirs prés de chez vous!</h2>
-    <div id="map" data-map-data="{{ getSerializedPoints(bestCenter) }}"></div>
-{% endblock %}
 
+        <h2>Localisez les centres de loisirs près de chez vous !</h2>
+        <div id="map" data-map-data="{{ getSerializedPoints(bestCenter) }}"></div>
+    </div>
+{% endblock %}

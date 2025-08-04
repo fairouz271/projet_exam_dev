@@ -4,8 +4,24 @@
 
 {% block body %}
     <div class="example-wrapper">
+
         <img src="{{ asset(center.imagePath) }}" class="card-img-top" alt="Image du centre">
-        <h1> {{ center.name }}</h1>
+        <h1>
+            {{ center.name }}
+
+            {% if app.user %}
+                <a href="{{ path('center_toggle_favorite', {id: center.id}) }}"
+                   class="btn btn-link p-0"
+                   title="{{ app.user.favoriteCenters.contains(center) ? 'Retirer des favoris' : 'Ajouter aux favoris' }}">
+                    <i class="fa{{ app.user.favoriteCenters.contains(center) ? 's' : 'r' }} fa-heart text-danger"></i>
+                </a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn btn-link p-0" title="Connectez-vous pour ajouter aux favoris">
+                    <i class="far fa-heart text-muted"></i>
+                </a>
+            {% endif %}
+        </h1>
+
         <p>{{ center.description }}<br>
             Moyenne des notes :
             {% if averageRating != null %}
@@ -20,14 +36,6 @@
             <strong>Le numero de téléphone :</strong> {{ center.phoneNumber }}<br>
         </div>
 
-{#        <div class="row">#}
-{#            {% for comment in comments %}#}
-{#                <div class="col-lg-3">#}
-{#                    <p>{{ comment.content }}</p>#}
-{#                    <p>{{ comment.rating }}</p>#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#        </div>#}
 
         <h3 class="mt-4">Commentaires</h3>
         <div class="row">

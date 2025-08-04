@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Favoris{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Mes centres favoris</h1>
+
+        {% if favorites is empty %}
+            <p>Vous n'avez encore ajouté aucun centre à vos favoris.</p>
+        {% else %}
+            <div class="row">
+                {% for center in favorites %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="{{ asset(center.imagePath) }}" class="card-img-top" alt="{{ center.name }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ center.name }}</h5>
+                                <p class="card-text">{{ center.description|slice(0, 100) ~ '...' }}</p>
+                                <a href="{{ path('app_show_center', {id: center.id}) }}" class="btn btn-primary">Voir plus</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
