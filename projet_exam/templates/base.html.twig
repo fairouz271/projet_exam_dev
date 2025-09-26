@@ -3,72 +3,38 @@
 <head>
     <meta charset="UTF-8" />
     <title>{% block title %}Centre de loisirs{% endblock %}</title>
+
     {% block stylesheets %}
         {{ encore_entry_link_tags('style') }}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+              crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% endblock %}
+
     {% block javascripts %}
         {{ encore_entry_script_tags('script') }}
     {% endblock %}
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('app_home') }}">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo Centre de loisirs" height="40" />
-            Accueil
-        </a>
+    {# Header #}
+    {% include 'partials/_header.html.twig' %}
 
-        <div class="d-flex">
-            {% if app.user %}
-                <span class="navbar-text me-3">
-                    Bonjour, {{ app.user.firstName }} !
-                </span>
-                <a href="{{ path('app_logout') }}" class="btn btn-outline-danger">Se déconnecter</a>
-            {% else %}
-                <a href="{{ path('app_login') }}" class="btn btn-outline-primary me-2">Se connecter</a>
-                <a href="{{ path('app_register') }}" class="btn btn-primary">S'inscrire</a>
-            {% endif %}
-            {% if app.user %}
-                <a href="{{ path('user_favorites') }}" class="btn btn-outline-secondary ms-2">Mes favoris</a>
-            {% endif %}
-        </div>
-    </div>
-</nav>
-
-<main class="flex-grow-1">
-    {% block body %}
-        <div class="container py-4">
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
+    <main class="flex-grow-1">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             {% endfor %}
-        </div>
-    {% endblock %}
-</main>
+        {% endfor %}
 
-<footer class="bg-light text-center text-white py-3 mt-auto border-top">
-    <div class="container-fluid d-flex align-items-center justify-content-between" style="height: 60px; padding: 0 20px;">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo Centre de loisirs" height="40" />
+        {% block body %}{% endblock %}
+    </main>
 
-        <div class="social-links d-flex gap-3 justify-content-center flex-grow-1 text-white">
-            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-        </div>
-
-        {% if app.user %}
-            <a href="{{ path('app_logout') }}" class="btn btn-outline-danger btn-connexion">Se déconnecter</a>
-        {% else %}
-            <a href="{{ path('app_login') }}" class="btn btn-outline-primary btn-connexion">Connexion</a>
-        {% endif %}
-    </div>
-</footer>
+    {# Footer #}
+    {% include 'partials/_footer.html.twig' %}
 
 </body>
 </html>

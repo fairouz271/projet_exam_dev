@@ -1,0 +1,9 @@
+<div class="card h-100">
+    <div class="card-body">
+        <p class="card-text">{{ comment.content }}</p>
+        <p class="card-text"><strong>Note :</strong> {{ comment.rating }} / 5</p>
+        {% if comment.publicationDate is defined %}
+            <p class="text-muted small">Posté le {{ comment.publicationDate|date('d/m/Y') }}</p>
+        {% endif %}
+    </div>
+</div>

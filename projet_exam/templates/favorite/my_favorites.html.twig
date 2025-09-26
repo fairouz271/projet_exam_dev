@@ -10,19 +10,11 @@
             <p>Vous n'avez encore ajouté aucun centre à vos favoris.</p>
         {% else %}
             <div class="row">
-                {% for center in favorites %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <img src="{{ asset(center.imagePath) }}" class="card-img-top" alt="{{ center.name }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ center.name }}</h5>
-                                <p class="card-text">{{ center.description|slice(0, 100) ~ '...' }}</p>
-                                <a href="{{ path('app_show_center', {id: center.id}) }}" class="btn btn-primary">Voir plus</a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+    {% for center in favorites %}
+        {% include 'partials/_center_card.html.twig' with { center: center } %}
+    {% endfor %}
+</div>
+
         {% endif %}
     </div>
 {% endblock %}

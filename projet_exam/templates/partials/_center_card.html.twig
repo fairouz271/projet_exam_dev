@@ -1,0 +1,29 @@
+<div class="col-12 col-md-6 col-lg-4 mb-4">
+    <div class="card h-100 center-card">
+        <img src="{{ asset(center.imagePath) }}" class="card-img-top center-card-img" alt="{{ center.name }}" />
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title center-title">{{ center.name }}</h5>
+
+            <p class="card-text center-description">
+                {{ center.description|length > 120 ? center.description|slice(0, 120) ~ '...' : center.description }}
+            </p>
+
+            {% if center.activities is defined %}
+            <p class="center-activities-title">Activités :</p>
+            <ul class="center-activities-list">
+                {% for activity in center.activities %}
+                    <li>{{ activity.name }}</li>
+                {% else %}
+                    <li class="no-activity">Aucune activité</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <div class="mt-auto">
+                <a href="{{ path('app_show_center', { id: center.id }) }}" class="btn btn-outline-primary btn-sm center-more-link">
+                    Lire la suite
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

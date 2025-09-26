@@ -1,0 +1,15 @@
+<footer class="bg-light text-center text-white py-3 mt-auto border-top">
+    <div class="container-fluid d-flex align-items-center justify-content-between" style="height: 60px; padding: 0 20px;">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo Centre de loisirs" height="40" />
+        <div class="social-links d-flex gap-3 justify-content-center flex-grow-1 text-white">
+            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+        </div>
+        {% if app.user %}
+            <a href="{{ path('app_logout') }}" class="btn btn-outline-danger btn-connexion">Se déconnecter</a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="btn btn-outline-primary btn-connexion">Connexion</a>
+        {% endif %}
+    </div>
+</footer>

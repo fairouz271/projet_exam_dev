@@ -1,0 +1,26 @@
+.custom-footer, footer {
+    background-color: $secondary-color;
+    color: $default-color;
+    text-align: center;
+    flex-shrink: 0;
+    padding: 1rem;
+
+    .footer-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        padding: 0 20px;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 15px;
+        flex-grow: 1;
+        justify-content: center;
+
+        a { color: $primary-color; font-size: 1.2rem; text-decoration: none; }
+    }
+
+    .btn-connexion { margin-left: auto; }
+}

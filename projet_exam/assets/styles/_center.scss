@@ -1,0 +1,32 @@
+.center-card, .comment-card {
+    background-color: $default-background-color;
+    border-radius: $border-radius;
+    overflow: hidden;
+    margin-bottom: 1rem;
+
+    img { width: 100%; border-radius: $border-radius; }
+
+    h5, h1, h3 { font-weight: bold; margin-bottom: 0.5rem; }
+
+    p { margin-bottom: 0.5rem; }
+
+    a {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: $primary-color;
+        color: $default-color;
+        border-radius: $border-radius;
+        margin-top: 0.5rem;
+        text-align: center;
+        text-decoration: none;
+        &:hover { background-color: darken($primary-color, 10%); }
+    }
+}
+
+.favorite-button {
+    border: none;
+    background: none;
+    color: $danger-color;
+    font-size: 1.5rem;
+    padding: 0;
+}

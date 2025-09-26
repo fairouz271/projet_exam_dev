@@ -1,96 +1,77 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CenterController!{% endblock %}
+{% block title %}{{ center.name }}{% endblock %}
 
 {% block body %}
-    <div class="example-wrapper">
+<div class="example-wrapper">
 
-        <img src="{{ asset(center.imagePath) }}" class="card-img-top" alt="Image du centre">
-        <h1>
-            {{ center.name }}
-
-            {% if app.user %}
-                <a href="{{ path('center_toggle_favorite', {id: center.id}) }}"
-                   class="btn btn-link p-0"
-                   title="{{ app.user.favoriteCenters.contains(center) ? 'Retirer des favoris' : 'Ajouter aux favoris' }}">
-                    <i class="fa{{ app.user.favoriteCenters.contains(center) ? 's' : 'r' }} fa-heart text-danger"></i>
-                </a>
-            {% else %}
-                <a href="{{ path('app_login') }}" class="btn btn-link p-0" title="Connectez-vous pour ajouter aux favoris">
-                    <i class="far fa-heart text-muted"></i>
-                </a>
-            {% endif %}
-        </h1>
-
-        <p>{{ center.description }}<br>
-            Moyenne des notes :
-            {% if averageRating != null %}
-                {{ averageRating|number_format(1, '.', '') }} / 5
-            {% else %}
-                Il n'y a pas de notes encore !
-            {% endif %}
-        </p>
-        <div>
-            <strong>Le prix d'entrée est:</strong>{{ center.price }}€<br>
-            <strong>Les horaires :</strong> {{ center.schedules }}<br>
-            <strong>Le numero de téléphone :</strong> {{ center.phoneNumber }}<br>
-        </div>
-
-
-        <h3 class="mt-4">Commentaires</h3>
-        <div class="row">
-            {% for comment in comments|slice(0, 3) %}
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <p class="card-text">{{ comment.content }}</p>
-                            <p class="card-text">
-                                <strong>Note :</strong> {{ comment.rating }} / 5
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="text-end">
-            <a href="{{ path('center_all_comments', {id: center.id}) }}" class="btn btn-outline-primary">
-                Voir tous les commentaires
+    <img src="{{ asset(center.imagePath) }}" class="card-img-top" alt="Image du centre">
+    <h1>
+        {{ center.name }}
+        {% if app.user %}
+            <a href="{{ path('center_toggle_favorite', {id: center.id}) }}" class="btn btn-link p-0"
+               title="{{ app.user.favoriteCenters.contains(center) ? 'Retirer des favoris' : 'Ajouter aux favoris' }}">
+                <i class="fa{{ app.user.favoriteCenters.contains(center) ? 's' : 'r' }} fa-heart text-danger"></i>
             </a>
-        </div>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="btn btn-link p-0">
+                <i class="far fa-heart text-muted"></i>
+            </a>
+        {% endif %}
+    </h1>
 
+    <p>{{ center.description }}<br>
+        Moyenne des notes :
+        {% if averageRating != null %}
+            {{ averageRating|number_format(1, '.', '') }} / 5
+        {% else %}
+            Il n'y a pas de notes encore !
+        {% endif %}
+    </p>
 
+    <div>
+        <strong>Prix:</strong> {{ center.price }}€<br>
+        <strong>Horaires:</strong> {{ center.schedules }}<br>
+        <strong>Téléphone:</strong> {{ center.phoneNumber }}<br>
+    </div>
 
-        <h3 class="mt-4">Donner votre avis ! </h3>
+    <h3 class="mt-4">Commentaires</h3>
+    <div class="row">
+        {% for comment in comments|slice(0, 3) %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                {% include 'center/_comment_card.html.twig' with { comment: comment } %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="text-end">
+        <a href="{{ path('center_all_comments', {id: center.id}) }}" class="btn btn-outline-primary">
+            Voir tous les commentaires
+        </a>
+    </div>
 
-        {{ form_start(form) }}
+    <h3 class="mt-4">Donner votre avis !</h3>
+    {{ form_start(form) }}
         {{ form_row(form.content) }}
         {{ form_row(form.rating) }}
         {{ form_row(form.submit) }}
-        {{ form_end(form) }}
+    {{ form_end(form) }}
 
-        {% if not app.user %}
-            <p>
-                <a href="{{ path('app_login') }}">Connectez-vous</a> pour laisser un commentaire.
-            </p>
-        {% endif %}
+    {% if not app.user %}
+        <p><a href="{{ path('app_login') }}">Connectez-vous</a> pour laisser un commentaire.</p>
+    {% endif %}
 
-        <a href="{{ path('app_home') }}" class="btn btn-secondary mt-3">Retour</a>
-    </div>
+    <a href="{{ path('app_home') }}" class="btn btn-secondary mt-3">Retour</a>
+</div>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-
-    <script>
-        var map = L.map('map').setView([45.7772, 3.0870], 8);
-
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href=""></a>'
-        }).addTo(map);
-
-        {% if center.adress and center.adress.altitude != null and center.adress.longitude != null %}
-        L.marker([{{ center.adress.altitude }}, {{ center.adress.longitude }}]).addTo(map)
-            .bindTooltip("{{ center.name }}", {permanent: false, direction: "top"});
-        {% endif %}
-    </script>
+{{ parent() }}
+<script>
+    var map = L.map('map').setView([45.7772, 3.0870], 8);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; <a href=""></a>' }).addTo(map);
+    {% if center.adress and center.adress.altitude != null and center.adress.longitude != null %}
+    L.marker([{{ center.adress.altitude }}, {{ center.adress.longitude }}]).addTo(map)
+        .bindTooltip("{{ center.name }}", {permanent: false, direction: "top"});
+    {% endif %}
+</script>
 {% endblock %}

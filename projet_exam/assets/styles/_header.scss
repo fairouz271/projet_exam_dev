@@ -1,0 +1,6 @@
+.custom-navbar {
+    background-color: $secondary-color;
+    color: $default-color;
+
+    .navbar-brand { display: flex; align-items: center; gap: 0.5rem; }
+}
