@@ -11,17 +11,10 @@
         </p>
 
         <div class="row">
-    {% for center in bestCenter %}
-        {% include 'partials/_center_card.html.twig' with { center: center } %}
-    {% else %}
-        <div class="col-12"><p>Aucun centre trouvé.</p></div>
-    {% endfor %}
-</div>
-
+            {% for center in bestCenter %}
+                {% include 'partials/_center_card.html.twig' with { center: center } %}
             {% else %}
-                <div class="col-12">
-                    <p>Aucun centre trouvé.</p>
-                </div>
+                <div class="col-12"><p>Aucun centre trouvé.</p></div>
             {% endfor %}
         </div>
 
