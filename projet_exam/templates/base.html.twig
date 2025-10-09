@@ -15,12 +15,13 @@
         {{ encore_entry_script_tags('script') }}
     {% endblock %}
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column ">
 
     {# Header #}
+    <header>
     {% include 'partials/_header.html.twig' %}
-
-    <main class="flex-grow-1">
+    </header>
+    <main class="flex-grow">
         {% for label, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
@@ -32,9 +33,9 @@
 
         {% block body %}{% endblock %}
     </main>
-
+<footer>
     {# Footer #}
     {% include 'partials/_footer.html.twig' %}
-
+</footer>
 </body>
 </html>

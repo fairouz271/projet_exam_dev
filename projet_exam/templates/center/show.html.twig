@@ -4,9 +4,9 @@
 
 {% block body %}
 <div class="example-wrapper">
-
-    <img src="{{ asset(center.imagePath) }}" class="card-img-top" alt="Image du centre">
-    <h1>
+    <div class="center-card">
+        <img src="{{ asset(center.imagePath) }}" alt="Image du centre">
+    </div>    <h1>
         {{ center.name }}
         {% if app.user %}
             <a href="{{ path('center_toggle_favorite', {id: center.id}) }}" class="btn btn-link p-0"
