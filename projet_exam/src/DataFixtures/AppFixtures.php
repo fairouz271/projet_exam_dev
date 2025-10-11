@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Factory\CenterFactory;
 use App\Factory\AdressFactory;
 use App\Factory\ActivityFactory;
+use App\Factory\ImageFactory;
 use App\Factory\UserFactory;
 use App\Factory\CommentFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -27,15 +28,15 @@ class AppFixtures extends Fixture
     UserFactory::createMany(50);
     UserFactory::createOne(['roles' => ['ROLE_ADMIN', 'ROLE_USER']]);
 
-        CenterFactory::createMany(10, [
+        $centers= CenterFactory::createMany(10, [
             'adress' => AdressFactory::new(),
             'activities' => ActivityFactory::randomRange(1, 3),
         ]);
+
+        foreach ($centers as $center) {
+            ImageFactory::createMany(4 , ['center' => $center]); // 3 images secondaires par center
+        }
     CommentFactory::createMany(200);
-
-
-
-
 
         $manager->flush();
     }

@@ -21,9 +21,7 @@ class Image
     #[ORM\ManyToOne(inversedBy: 'images')]
     private ?Center $center;
 
-    #[ORM\ManyToOne(inversedBy: 'image')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Center $imege = null;
+
 
     public function getId(): ?int
     {
@@ -42,17 +40,21 @@ class Image
         return $this;
     }
 
-    public function getImege(): ?Center
+    public function getCenter(): ?Center
     {
-        return $this->imege;
+        return $this->center;
     }
 
-    public function setImege(?Center $imege): static
+    public function setCenter(?Center $center): void
     {
-        $this->imege = $imege;
-
-        return $this;
+        $this->center = $center;
     }
+
+
+
+
+
+
 
 
 }
