@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des commentaires{% endblock %}
+
+{% block body %}
+    <h1>Gestion des commentaires</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Utilisateur</th>
+            <th>Contenu</th>
+            <th>Centre</th>
+            <th>Publié le</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.id }}</td>
+                <td>{{ comment.user.email }}</td>
+                <td>{{ comment.content|length > 50 ? comment.content[:50] ~ '...' : comment.content }}
+                </td>
+                <td>{{ comment.center.name }}</td>
+                <td>{{ comment.publicationDate|date('d/m/Y H:i') }}</td>
+                <td>
+                    {% if comment.isApproved %}
+                        ✅ Approuvé
+                    {% else %}
+                        ❌ En attente
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not comment.isApproved %}
+                        <a href="{{ path('admin_comment_approve', {id: comment.id}) }}" class="btn btn-success btn-sm">Approuver</a>
+                    {% endif %}
+                    <a href="{{ path('admin_comment_delete', {id: comment.id}) }}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Voulez-vous vraiment supprimer ce commentaire ?');">
+                        Supprimer
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="7">Aucun commentaire trouvé.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
