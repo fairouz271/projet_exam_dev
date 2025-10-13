@@ -34,7 +34,7 @@ class AppFixtures extends Fixture
         ]);
 
         foreach ($centers as $center) {
-            ImageFactory::createMany(4 , ['center' => $center]); // 3 images secondaires par center
+            ImageFactory::createMany(10 , ['center' => $center]); // 3 images secondaires par center
         }
     CommentFactory::createMany(200);
 

@@ -1,0 +1,17 @@
+{# templates/center/list.html.twig #}
+<h2>Recherche de centres</h2>
+
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<button type="submit" class="btn btn-primary mt-2">Rechercher</button>
+{{ form_end(form) }}
+
+{#<ul>#}
+{#    {% for center in centres %}#}
+{#        <li>#}
+{#            <strong>{{ center.name }}</strong> - {{ center.adress.street }}#}
+{#        </li>#}
+{#    {% else %}#}
+{#        <li>Aucun centre trouvé</li>#}
+{#    {% endfor %}#}
+{#</ul>#}

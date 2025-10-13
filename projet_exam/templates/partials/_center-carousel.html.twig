@@ -1,9 +1,18 @@
 <div id="carouselExample{{ center.id }}" class="carousel slide" data-bs-ride="carousel">
-
     <div class="carousel-inner">
-        {% for image in center.images %}
+        {% set groupedImages = center.images|batch(4, null) %}
+
+        {% for group in groupedImages %}
             <div class="carousel-item {% if loop.first %}active{% endif %}">
-                <img src="{{ image.path }}" class="d-block w-100" alt="{{ center.name }}">
+                <div class="d-flex justify-content-center flex-wrap">
+                    {% for image in group %}
+                        {% if image %}
+                            <div class="col-12 col-md-6 col-lg-4 p-1">
+                                <img src="{{ image.path }}" class="img-fluid rounded" alt="{{ center.name }}">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         {% endfor %}
     </div>

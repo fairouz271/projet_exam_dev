@@ -40,4 +40,19 @@ class CenterRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findByNameOrAdress(?string $query)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->leftJoin('c.adress', 'a')
+            ->addSelect('a');
+
+        if ($query) {
+            $qb->where('c.name LIKE :q OR a.street LIKE :q') // ou a.city, a.zip
+            ->setParameter('q', '%'.$query.'%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
 }
