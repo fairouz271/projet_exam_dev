@@ -25,7 +25,6 @@ class Center
     #[ORM\Column(type: Types::TEXT)]
     private ?string $schedules = null;
 
-
     #[ORM\Column(length: 255)]
     private ?string $imagePath = null;
 
@@ -38,7 +37,12 @@ class Center
     /**
      * @var Collection<int, Comment>
      */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'center')]
+    #[ORM\OneToMany(
+        targetEntity: Comment::class,
+        mappedBy: 'center',
+        orphanRemoval: true,
+        cascade: ['remove']
+    )]
     private Collection $comments;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -54,17 +58,22 @@ class Center
     /**
      * @var Collection<int, Image>
      */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'center')]
+    #[ORM\OneToMany(
+        targetEntity: Image::class,
+        mappedBy: 'center',
+        orphanRemoval: true,
+        cascade: ['remove']
+    )]
     private Collection $images;
-
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->activities = new ArrayCollection();
         $this->images = new ArrayCollection();
-
     }
+
+    // -------------------- Getters / Setters --------------------
 
     public function getId(): ?int
     {
@@ -79,7 +88,6 @@ class Center
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -91,7 +99,6 @@ class Center
     public function setPhoneNumber(string $phoneNumber): static
     {
         $this->phoneNumber = $phoneNumber;
-
         return $this;
     }
 
@@ -103,10 +110,8 @@ class Center
     public function setSchedules(string $schedules): static
     {
         $this->schedules = $schedules;
-
         return $this;
     }
-
 
     public function getImagePath(): ?string
     {
@@ -116,7 +121,6 @@ class Center
     public function setImagePath(string $imagePath): static
     {
         $this->imagePath = $imagePath;
-
         return $this;
     }
 
@@ -128,7 +132,6 @@ class Center
     public function setPrice(?int $price): static
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -140,7 +143,6 @@ class Center
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -152,25 +154,22 @@ class Center
         return $this->comments;
     }
 
-    public function addComments(Comment $comment): static
+    public function addComment(Comment $comment): static
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
             $comment->setCenter($this);
         }
-
         return $this;
     }
 
     public function removeComment(Comment $comment): static
     {
         if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
             if ($comment->getCenter() === $this) {
                 $comment->setCenter(null);
             }
         }
-
         return $this;
     }
 
@@ -182,7 +181,6 @@ class Center
     public function setAdress(Adress $adress): static
     {
         $this->adress = $adress;
-
         return $this;
     }
 
@@ -199,7 +197,6 @@ class Center
         if (!$this->activities->contains($activity)) {
             $this->activities->add($activity);
         }
-
         return $this;
     }
 
@@ -212,11 +209,9 @@ class Center
     public function setActivities(iterable $activities): static
     {
         $this->activities = new ArrayCollection();
-
         foreach ($activities as $activity) {
             $this->addActivity($activity);
         }
-
         return $this;
     }
 
@@ -234,22 +229,16 @@ class Center
             $this->images->add($image);
             $image->setCenter($this);
         }
-
         return $this;
     }
 
     public function removeImage(Image $image): static
     {
         if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
             if ($image->getCenter() === $this) {
                 $image->setCenter(null);
             }
         }
-
         return $this;
     }
-
-
-
 }

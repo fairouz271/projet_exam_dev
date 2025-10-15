@@ -1,0 +1,30 @@
+{{ form_start(form) }}
+
+{{ form_row(form.name) }}
+{{ form_row(form.phoneNumber) }}
+{{ form_row(form.schedules) }}
+{{ form_row(form.price) }}
+{{ form_row(form.description) }}
+
+<p>{{ field_label(form.imagePath) }}</p>
+{{ form_widget(form.imagePath) }}
+{% if center is defined and center.imagePath %}
+    <div class="mt-2">
+        <img src="{{ asset('uploads/centers/' ~ center.imagePath) }}" alt="{{ center.name }}" style="max-width: 200px;">
+    </div>
+{% endif %}
+
+{% if form.activities is defined %}
+    <p>{{ field_label(form.activities) }}</p>
+    {% for label, value in field_choices(form.activities) %}
+        <label class="form-label d-block">
+            <input type="checkbox" name="{{ field_name(form.activities) }}[]" value="{{ value }}"
+                   {% if value in field_value(form.activities) %}checked{% endif %}>
+            {{ label }}
+        </label>
+    {% endfor %}
+{% endif %}
+
+<button type="submit" class="btn btn-primary mt-3 d-block">{{ submitLabel }}</button>
+
+{{ form_end(form) }}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin - Centres{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <a class="btn btn-success my-3" href="{{ path('admin_center_new') }}">Ajouter un centre</a>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Téléphone</th>
+                <th>Prix</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for center in centers %}
+                <tr>
+                    <td>{{ center.name }}</td>
+                    <td>{{ center.phoneNumber }}</td>
+                    <td>{{ center.price ?? '-' }}€</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="{{ path('admin_center_show', {id: center.id}) }}">Voir</a>
+                        <a class="btn btn-warning btn-sm" href="{{ path('admin_center_edit', {id: center.id}) }}">Modifier</a>
+                        <form method="post" action="{{ path('admin_center_delete', {id: center.id}) }}" style="display:inline" onsubmit="return confirm('Supprimer ce centre ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ center.id) }}">
+                            <button class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">Aucun centre trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin - Ajouter un centre{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        {% include '/partials/_admin_form.html.twig' with { 'form': form, 'center': center, 'submitLabel': 'Ajouter' } %}
+    </div>
+{% endblock %}
