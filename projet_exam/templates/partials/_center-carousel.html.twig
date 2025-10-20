@@ -1,4 +1,4 @@
-<div id="carouselExample{{ center.id }}" class="carousel slide" data-bs-ride="carousel">
+<div id="carouselExample{{ center.id }}" class="carousel slide" >
     <div class="carousel-inner">
         {% set groupedImages = center.images|batch(4, null) %}
 
@@ -7,8 +7,8 @@
                 <div class="d-flex justify-content-center flex-wrap">
                     {% for image in group %}
                         {% if image %}
-                            <div class="col-12 col-md-6 col-lg-4 p-1">
-                                <img src="{{ image.path }}" class="img-fluid rounded" alt="{{ center.name }}">
+                            <div class="col-6 col-md-6 col-lg-3 p-1">
+                                <img src="{{ image.path }}" class="img-fluid " alt="{{ center.name }}">
                             </div>
                         {% endif %}
                     {% endfor %}

@@ -28,13 +28,13 @@ class AppFixtures extends Fixture
     UserFactory::createMany(50);
     UserFactory::createOne(['roles' => ['ROLE_ADMIN', 'ROLE_USER']]);
 
-        $centers= CenterFactory::createMany(10, [
+        $centers= CenterFactory::createMany(12, [
             'adress' => AdressFactory::new(),
             'activities' => ActivityFactory::randomRange(1, 3),
         ]);
 
         foreach ($centers as $center) {
-            ImageFactory::createMany(10 , ['center' => $center]); // 3 images secondaires par center
+            ImageFactory::createMany(12 , ['center' => $center]); // 3 images secondaires par center
         }
     CommentFactory::createMany(200);
 

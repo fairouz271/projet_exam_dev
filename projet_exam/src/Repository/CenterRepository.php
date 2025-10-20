@@ -16,31 +16,10 @@ class CenterRepository extends ServiceEntityRepository
         parent::__construct($registry, Center::class);
     }
 
-    //    /**
-    //     * @return Center[] Returns an array of Center objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Center
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
+    public function findCenterById(int $id): ?Center
+    {
+        return $this->find($id);
+    }
     public function findByNameOrAdress(?string $query)
     {
         $qb = $this->createQueryBuilder('c')
@@ -48,7 +27,7 @@ class CenterRepository extends ServiceEntityRepository
             ->addSelect('a');
 
         if ($query) {
-            $qb->where('c.name LIKE :q OR a.street LIKE :q') // ou a.city, a.zip
+            $qb->where('c.name LIKE :q OR a.adress LIKE :q')
             ->setParameter('q', '%'.$query.'%');
         }
 

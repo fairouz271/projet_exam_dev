@@ -2,7 +2,7 @@
 {% block title %}{{ center.name }}{% endblock %}
 
 {% block body %}
-<div class="example-wrapper">
+<div class="center-details">
     <div class="center-card">
         {% include 'partials/_center-carousel.html.twig' with { center: center } %}    </div>
     <h1>
@@ -20,7 +20,7 @@
     </h1>
 
     <p>{{ center.description }}<br>
-        Moyenne des notes :
+       <strong> Moyenne des notes :</strong>
         {% if averageRating != null %}
             {{ averageRating|number_format(1, '.', '') }} / 5
         {% else %}
@@ -28,14 +28,22 @@
         {% endif %}
     </p>
 
-    <div>
-        <strong>Prix:</strong> {{ center.price }}€<br>
-        <strong>Horaires:</strong> {{ center.schedules }}<br>
-        <strong>Téléphone:</strong> {{ center.phoneNumber }}<br>
-    </div>
+    <ul class="list-group mb-4">
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Prix :</strong> <span>{{ center.price }} €</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Horaires :</strong> <span>{{ center.schedules }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Téléphone :</strong> <span>{{ center.phoneNumber }}</span>
+        </li>
+    </ul>
+
 
     <h3 class="mt-4">Commentaires</h3>
     <div class="row">
+
         {% for comment in comments|slice(0, 3) %}
             <div class="col-md-6 col-lg-4 mb-4">
                 {% include 'center/_comment_card.html.twig' with { comment: comment } %}
@@ -63,14 +71,4 @@
 </div>
 {% endblock %}
 
-{% block javascripts %}
-{{ parent() }}
-<script>
-    var map = L.map('map').setView([45.7772, 3.0870], 8);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; <a href=""></a>' }).addTo(map);
-    {% if center.adress and center.adress.altitude != null and center.adress.longitude != null %}
-    L.marker([{{ center.adress.altitude }}, {{ center.adress.longitude }}]).addTo(map)
-        .bindTooltip("{{ center.name }}", {permanent: false, direction: "top"});
-    {% endif %}
-</script>
-{% endblock %}
+

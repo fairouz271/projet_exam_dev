@@ -8,7 +8,7 @@ function initCenterMap(): void {
 
         let map = L.map('map', {
             center: L.latLng(45.7772, 3.0870),
-            zoom: 9,
+            zoom: 8,
         });
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

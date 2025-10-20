@@ -17,8 +17,15 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-
-        public function findAverageRatingByCenter(Center $center): Float
+    public function findByCenterQuery(Center $center)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.center = :center')
+            ->setParameter('center', $center)
+            ->orderBy('c.publicationDate', 'DESC')
+            ->getQuery();
+    }
+        public function findAverageRatingByCenter(Center $center): float
         {
             return $this->createQueryBuilder('r')
                 ->select('AVG(r.rating) as averageRating')
