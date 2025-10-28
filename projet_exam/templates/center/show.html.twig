@@ -3,8 +3,6 @@
 
 {% block body %}
 <div class="center-details">
-    <div class="center-card">
-        {% include 'partials/_center-carousel.html.twig' with { center: center } %}    </div>
     <h1>
         {{ center.name }}
         {% if app.user %}
@@ -18,15 +16,18 @@
             </a>
         {% endif %}
     </h1>
-
     <p>{{ center.description }}<br>
-       <strong> Moyenne des notes :</strong>
+        <strong> Avis :</strong>
         {% if averageRating != null %}
             {{ averageRating|number_format(1, '.', '') }} / 5
         {% else %}
             Il n'y a pas de notes encore !
         {% endif %}
     </p>
+
+    <div class="center-card">
+        {% include 'partials/_center-carousel.html.twig' with { center: center } %}    </div>
+
 
     <ul class="list-group mb-4">
         <li class="list-group-item d-flex justify-content-between">
@@ -41,7 +42,7 @@
     </ul>
 
 
-    <h3 class="mt-4">Commentaires</h3>
+    <h2 class="mt-4">Commentaires</h2>
     <div class="row">
 
         {% for comment in comments|slice(0, 3) %}
@@ -56,7 +57,7 @@
         </a>
     </div>
 
-    <h3 class="mt-4">Donner votre avis !</h3>
+    <h2 class="mt-4">Donner votre avis !</h2>
     {{ form_start(form) }}
         {{ form_row(form.content) }}
         {{ form_row(form.rating) }}

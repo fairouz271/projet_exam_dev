@@ -12,6 +12,8 @@ parameters:
         - enfoiré
         - salaud
 
+    centers_directory: '%kernel.project_dir%/public/uploads/centers'
+
 
 services:
     # default configuration for services in *this* file

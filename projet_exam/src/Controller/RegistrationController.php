@@ -27,6 +27,14 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
+            $existingUser = $entityManager->getRepository(User::class)
+                ->findOneBy(['email' => $user->getEmail()]);
+
+            if ($existingUser) {
+               $this->addFlash('danger', 'Un compte avec cet email existe déjà!');
+
+                return $this->redirectToRoute('app_register');
+            }
 
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 

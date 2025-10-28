@@ -60,6 +60,18 @@ class AdminCenterController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Gérer l'upload du fichier si un nouveau fichier est sélectionné
+            $imageFile = $form->get('imagePath')->getData();
+            if ($imageFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('centers_directory'), // dossier public/uploads/centers
+                    $newFilename
+                );
+                $center->setImagePath($newFilename);
+            }
+
             $em->flush();
             $this->addFlash('success', 'Centre modifié avec succès !');
 
@@ -67,10 +79,12 @@ class AdminCenterController extends AbstractController
         }
 
         return $this->render('admin_center/edit_center.html.twig', [
-            'form' => $form,
+            'form' => $form->createView(),
             'center' => $center,
+            'submitLabel' => 'Modifier',
         ]);
     }
+
 
     #[Route('/{id}/delete', name: 'admin_center_delete', methods: ['POST'])]
     public function delete(Request $request, Center $center, EntityManagerInterface $em): Response

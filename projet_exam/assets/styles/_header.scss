@@ -1,11 +1,33 @@
-.custom-navbar {
+.navbar {
     background-color: $secondary-color;
     color: $default-color;
 
-    .navbar-brand { display: flex; align-items: center; gap: 0.5rem; }
+    .navbar-brand {
+        align-items: center;
+        gap: 0.5rem;
+        @media (max-width: 768px) {
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+            width: auto;
+        }
+    }
 }
 
 .web-site-title {
     font-weight: bold;
     color:$primary-color;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
 }
+.header-button {
+    @media (max-width 768px){ flex-direction: column;
+        width: 100%;
+        align-items: center;
+
+    }
+}
+

@@ -9,7 +9,7 @@
     <div class="row">
         {% for comment in comments %}
             <div class="col-md-6 col-lg-4 mb-4">
-                {% include 'center/_comment_card.html.twig' with { comment: comment } %}
+                {% include 'center/_comment_card.html.twig' with { 'comment': comment } %}
             </div>
         {% else %}
             <p>Aucun commentaire à afficher.</p>
@@ -22,7 +22,7 @@
 
     <div class="mt-4">
         <a href="{{ path('app_show_center', { id: center.id }) }}" class="btn btn-secondary">
-            Retour à la fiche du centre
+            Retour a la fiche du centre
         </a>
     </div>
 </div>

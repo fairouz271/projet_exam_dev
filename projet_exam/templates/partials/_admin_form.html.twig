@@ -1,30 +1,91 @@
-{{ form_start(form) }}
+<div class="card shadow-sm p-4 mb-4 bg-light">
 
-{{ form_row(form.name) }}
-{{ form_row(form.phoneNumber) }}
-{{ form_row(form.schedules) }}
-{{ form_row(form.price) }}
-{{ form_row(form.description) }}
+    {{ form_start(form) }}
 
-<p>{{ field_label(form.imagePath) }}</p>
-{{ form_widget(form.imagePath) }}
-{% if center is defined and center.imagePath %}
-    <div class="mt-2">
-        <img src="{{ asset('uploads/centers/' ~ center.imagePath) }}" alt="{{ center.name }}" style="max-width: 200px;">
+    {# Affichage des erreurs générales #}
+    <div class="text-danger mb-3">
+        {{ form_errors(form) }}
     </div>
-{% endif %}
 
-{% if form.activities is defined %}
-    <p>{{ field_label(form.activities) }}</p>
-    {% for label, value in field_choices(form.activities) %}
-        <label class="form-label d-block">
-            <input type="checkbox" name="{{ field_name(form.activities) }}[]" value="{{ value }}"
-                   {% if value in field_value(form.activities) %}checked{% endif %}>
-            {{ label }}
-        </label>
-    {% endfor %}
-{% endif %}
+    {# Première ligne : Nom et Téléphone #}
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label mb-2">{{ field_label(form.name) }}</label>
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
 
-<button type="submit" class="btn btn-primary mt-3 d-block">{{ submitLabel }}</button>
+        <div class="col-md-6 mb-3">
+            <label class="form-label mb-2">{{ field_label(form.phoneNumber) }}</label>
+            {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.phoneNumber) }}
+        </div>
+    </div>
 
-{{ form_end(form) }}
+    {# Deuxième ligne : Horaires et Prix #}
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label mb-2">{{ field_label(form.schedules) }}</label>
+            {{ form_widget(form.schedules, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.schedules) }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label mb-2">{{ field_label(form.price) }}</label>
+            {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.price) }}
+        </div>
+    </div>
+
+    {# Description sur toute la largeur #}
+    <div class="row">
+        <div class="col-12 mb-3">
+            <label class="form-label mb-2">{{ field_label(form.description) }}</label>
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+    </div>
+
+    {# Image du centre #}
+    <div class="mb-3">
+        <label class="form-label mb-2 fw-bold">{{ field_label(form.imagePath) }}</label>
+        {{ form_widget(form.imagePath, {'attr': {'class': 'form-control'}}) }}
+        {% if center is defined and center.imagePath %}
+            <div class="mt-2 text-center">
+                <img src="{{ asset('uploads/centers/' ~ center.imagePath) }}"
+                     alt="{{ center.name }}"
+                     class="img-fluid rounded shadow-sm"
+                     style="max-width: 200px;">
+            </div>
+        {% endif %}
+        {{ form_errors(form.imagePath) }}
+    </div>
+
+    {# Activités #}
+    {% if form.activities is defined %}
+        <div class="mb-3">
+            <label class="form-label mb-2 fw-bold">{{ field_label(form.activities) }}</label>
+            <div class="row">
+                {% for label, value in field_choices(form.activities) %}
+                    <div class="col-md-4 form-check mb-2">
+                        <input type="checkbox"
+                               class="form-check-input"
+                               name="{{ field_name(form.activities) }}[]"
+                               value="{{ value }}"
+                               id="activity_{{ loop.index }}"
+                               {% if value in field_value(form.activities) %}checked{% endif %}>
+                        <label class="form-check-label" for="activity_{{ loop.index }}">{{ label }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {# Bouton de soumission aligné à droite #}
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary mt-3 px-4">{{ submitLabel }}</button>
+    </div>
+
+    {{ form_end(form) }}
+
+</div>
