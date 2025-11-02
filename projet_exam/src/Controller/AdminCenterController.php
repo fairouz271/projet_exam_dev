@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Center;
+use App\Entity\Adress;
 use App\Form\CenterType;
 use App\Repository\CenterRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,6 +33,25 @@ class AdminCenterController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Création automatique de l'adresse à partir des champs non mappés
+            $adress = new Adress();
+            $adress->setAdress($form->get('adress_adress')->getData());
+            $adress->setLongitude($form->get('adress_longitude')->getData());
+            $adress->setAltitude($form->get('adress_altitude')->getData());
+
+            $center->setAdress($adress);
+            $imageFile = $form->get('imagePath')->getData();
+            if ($imageFile) {
+                $newFilename = uniqid('center_') . '.' . $imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('centers_directory'), // public/uploads/centers
+                    $newFilename
+                );
+                $center->setImagePath($newFilename);
+            }
+
+            // Persistance : cascade persist sur Center s'occupe de l'adresse
             $em->persist($center);
             $em->flush();
 
@@ -40,10 +60,11 @@ class AdminCenterController extends AbstractController
         }
 
         return $this->render('admin_center/new_center.html.twig', [
-            'form' => $form,
+            'form' => $form->createView(),
             'center' => $center,
         ]);
     }
+
 
     #[Route('/{id}', name: 'admin_center_show')]
     public function show(Center $center): Response
@@ -61,16 +82,22 @@ class AdminCenterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Gérer l'upload du fichier si un nouveau fichier est sélectionné
             $imageFile = $form->get('imagePath')->getData();
+
             if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                // Génération d’un nom unique
+                $newFilename = uniqid('center_') . '.' . $imageFile->guessExtension();
+
+                // Déplacement du fichier dans le dossier uploads/centers
                 $imageFile->move(
-                    $this->getParameter('centers_directory'), // dossier public/uploads/centers
+                    $this->getParameter('centers_directory'),
                     $newFilename
                 );
+
+                // Mise à jour du nom du fichier dans l'entité
                 $center->setImagePath($newFilename);
             }
+
 
             $em->flush();
             $this->addFlash('success', 'Centre modifié avec succès !');

@@ -12,8 +12,8 @@
                 <img src="{{ asset('uploads/centers/' ~ center.imagePath) }}" alt="{{ center.name }}" style="max-width:300px; border-radius:10px;">
             {% endif %}
             <div>
-                <p>📞 Téléphone : {{ center.phoneNumber }}</p>
-                <p>💰 Prix : {{ center.price ?? 'Non renseigné' }}€</p>
+                <p>Téléphone : {{ center.phoneNumber }}</p>
+                <p> Prix : {{ center.price ?? 'Non renseigné' }}€</p>
                 <p><strong>Horaires :</strong> {{ center.schedules }}</p>
                 <p>{{ center.description|raw }}</p>
             </div>
@@ -21,7 +21,10 @@
 
         <ul class="my-4 d-flex gap-3 flex-wrap p-0">
             {% for activity in center.activities %}
-                <li class="badge text-bg-info">{{ activity.name }}</li>
+                <li class="badge text-bg-info">
+                    {% for activity in center.activities %}
+                        -  {{ activity.name }} <br>
+                    {% endfor %}</li>
             {% else %}
                 <li class="text-muted">Aucune activité</li>
             {% endfor %}

@@ -13,7 +13,7 @@
             <th>Contenu</th>
             <th>Centre</th>
             <th>Publié le</th>
-            <th>Statut</th>
+            <th>Approuvé</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -44,8 +44,15 @@
                 </td>
             </tr>
         {% else %}
-            <tr><td colspan="7">Aucun commentaire trouvé.</td></tr>
+            <tr>
+                <td colspan="7">Aucun commentaire trouvé.</td>
+            </tr>
+
         {% endfor %}
-        </tbody>
+
     </table>
+    </tbody>
+    <div class="mt-4">
+        {{ knp_pagination_render(comments) }}
+    </div>
 {% endblock %}

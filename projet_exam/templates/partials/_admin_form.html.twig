@@ -2,42 +2,54 @@
 
     {{ form_start(form) }}
 
-    {# Affichage des erreurs générales #}
+
     <div class="text-danger mb-3">
         {{ form_errors(form) }}
     </div>
 
-    {# Première ligne : Nom et Téléphone #}
     <div class="row">
-        <div class="col-md-6 mb-3">
-            <label class="form-label mb-2">{{ field_label(form.name) }}</label>
-            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.name) }}
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label mb-2">{{ field_label(form.name) }}</label>
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label mb-2">{{ field_label(form.phoneNumber) }}</label>
+                {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.phoneNumber) }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label mb-2">{{ field_label(form.price) }}</label>
+                {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.price) }}
+            </div>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label class="form-label mb-2">{{ field_label(form.phoneNumber) }}</label>
-            {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.phoneNumber) }}
+        <div class="col-md-6">
+            <h5 class="mb-3">Adresse</h5>
+            <div class="mb-3">
+                {{ form_row(form.adress.adress, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(form.adress.longitude, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(form.adress.altitude, {'attr': {'class': 'form-control'}}) }}
+            </div>
         </div>
     </div>
 
-    {# Deuxième ligne : Horaires et Prix #}
     <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-12 mb-3">
             <label class="form-label mb-2">{{ field_label(form.schedules) }}</label>
             {{ form_widget(form.schedules, {'attr': {'class': 'form-control'}}) }}
             {{ form_errors(form.schedules) }}
         </div>
-
-        <div class="col-md-6 mb-3">
-            <label class="form-label mb-2">{{ field_label(form.price) }}</label>
-            {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.price) }}
-        </div>
     </div>
 
-    {# Description sur toute la largeur #}
     <div class="row">
         <div class="col-12 mb-3">
             <label class="form-label mb-2">{{ field_label(form.description) }}</label>
@@ -46,22 +58,33 @@
         </div>
     </div>
 
-    {# Image du centre #}
-    <div class="mb-3">
-        <label class="form-label mb-2 fw-bold">{{ field_label(form.imagePath) }}</label>
-        {{ form_widget(form.imagePath, {'attr': {'class': 'form-control'}}) }}
-        {% if center is defined and center.imagePath %}
-            <div class="mt-2 text-center">
-                <img src="{{ asset('uploads/centers/' ~ center.imagePath) }}"
-                     alt="{{ center.name }}"
-                     class="img-fluid rounded shadow-sm"
-                     style="max-width: 200px;">
-            </div>
-        {% endif %}
-        {{ form_errors(form.imagePath) }}
-    </div>
 
-    {# Activités #}
+
+        <div class="mb-3">
+            <label class="form-label mb-2 fw-bold">{{ field_label(form.imagePath) }}</label>
+
+
+            {% if center is defined and center.imagePath %}
+                <div class="mt-2 text-center mb-2">
+                    <img src="{{ asset('uploads/centers/' ~ center.imagePath) }}"
+                         alt="{{ center.name }}"
+                         class="img-fluid rounded shadow-sm"
+                         style="max-width: 200px;">
+                </div>
+            {% endif %}
+
+
+            {{ form_widget(form.imagePath, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.imagePath) }}
+
+            <small class="text-muted">
+                Laissez vide pour conserver l’image actuelle.
+            </small>
+        </div>
+
+
+
+
     {% if form.activities is defined %}
         <div class="mb-3">
             <label class="form-label mb-2 fw-bold">{{ field_label(form.activities) }}</label>

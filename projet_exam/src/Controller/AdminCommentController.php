@@ -5,17 +5,26 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/admin/comments')]
+#[IsGranted('ROLE_ADMIN')]
 class AdminCommentController extends AbstractController
 {
     #[Route('/', name: 'admin_comments_list')]
-    public function index(CommentRepository $commentRepository): Response
+    public function index(CommentRepository $commentRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $comments = $commentRepository->findBy([], ['publicationDate' => 'DESC']);
+         $query= $commentRepository->findBy([], ['publicationDate' => 'DESC']);
+
+        $comments = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            6
+        );
 
         return $this->render('admin/comments/index.html.twig', [
             'comments' => $comments,
@@ -28,7 +37,7 @@ class AdminCommentController extends AbstractController
         $comment->setIsApproved(true);
         $em->flush();
 
-        $this->addFlash('success', 'Commentaire approuvé !');
+        $this->addFlash('success', 'Commentaire ajouté avec succés !');
         return $this->redirectToRoute('admin_comments_list');
     }
 

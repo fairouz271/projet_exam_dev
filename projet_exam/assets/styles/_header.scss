@@ -2,16 +2,16 @@
     background-color: $secondary-color;
     color: $default-color;
 
-    .navbar-brand {
-        align-items: center;
-        gap: 0.5rem;
-        @media (max-width: 768px) {
-            flex-direction: column;
-            text-align: center;
-            justify-content: center;
-            width: auto;
-        }
-    }
+    //.navbar-brand {
+    //    align-items: center;
+    //    gap: 0.5rem;
+    //    @media (max-width: 768px) {
+    //        flex-direction: column;
+    //        text-align: center;
+    //        justify-content: center;
+    //        width: auto;
+    //    }
+    //}
 }
 
 .web-site-title {
@@ -24,10 +24,19 @@
 
 }
 .header-button {
-    @media (max-width 768px){ flex-direction: column;
-        width: 100%;
-        align-items: center;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
 
+
+@media (max-width: 992px) {
+     .header-button {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+        width: auto;
     }
 }
+
 

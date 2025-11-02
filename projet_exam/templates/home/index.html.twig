@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container my-5">
-        {# Formulaire de recherche #}
+
         {% include 'partials/_recherche-center.html.twig' with {'form': searchForm} %}
 
 
@@ -15,16 +15,21 @@
             Faites vivre à vos enfants des moments magiques en Auvergne,
             entre aventures en plein air et jeux en espace couvert !
         </p>
-
         <div class="row">
-            {% for center in bestCenter %}
-                {% include 'partials/_center_card.html.twig' with { center: center } %}
+            {% for center in centers %}
+
+                {% include 'partials/_center_card.html.twig' with { 'center': center } %}
+
             {% else %}
-                <div class="col-12"><p>Aucun centre trouvé.</p></div>
+                <p>Aucun centre trouvé.</p>
             {% endfor %}
         </div>
 
+        <div class="mt-4">
+            {{ knp_pagination_render(centers) }}
+        </div>
+
         <h2>Localisez les centres de loisirs près de chez vous !</h2>
-        <div id="map" data-map-data="{{ getSerializedPoints(bestCenter) }}"></div>
+        <div id="map" data-map-data="{{ getSerializedPoints(centers.items) }}"></div>
     </div>
 {% endblock %}

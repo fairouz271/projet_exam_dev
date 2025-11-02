@@ -6,7 +6,6 @@
 <div class="web-site-title ">FUN CORNER</div>
         <div class="header-button d-flex flex-md-row flex-column align-items-center gap-2 mt-2 mt-lg-0">
             {% if app.user %}
-                <span class="navbar-text me-3">Bonjour, {{ app.user.firstName }} !</span>
                 <a href="{{ path('app_logout') }}" class="btn btn-outline-danger">Se déconnecter</a>
                 <a href="{{ path('user_favorites') }}" class="btn btn-outline-secondary ms-2">Mes favoris</a>
             {% else %}

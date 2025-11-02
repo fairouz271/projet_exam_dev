@@ -25,7 +25,7 @@ class Center
     #[ORM\Column(type: Types::TEXT)]
     private ?string $schedules = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $imagePath = null;
 
     #[ORM\Column(nullable: true)]

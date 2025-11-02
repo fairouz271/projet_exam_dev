@@ -18,14 +18,13 @@ final class CenterController extends AbstractController
 {
     #[Route('/center/{id}', name: 'app_show_center', requirements: ['id' => '\d+'])]
     public function show(
-        int                    $id,
-        Request                $request,
-        CenterRepository       $centerRepository,
-        CommentRepository      $commentRepository,
+        int $id,
+        Request $request,
+        CenterRepository $centerRepository,
+        CommentRepository $commentRepository,
         EntityManagerInterface $em,
-        CommentFilter          $filter
-    ): Response
-    {
+        CommentFilter $filter
+    ): Response {
         $center = $centerRepository->find($id);
 
         if (!$center) {
@@ -45,25 +44,31 @@ final class CenterController extends AbstractController
                 return $this->redirectToRoute('app_login');
             }
 
-            if ($filter->containsForbiddenWords($comment->getContent())) {
-                $this->addFlash('danger', 'Votre commentaire contient des propos inappropriés.');
-                return $this->redirectToRoute('app_show_center', ['id' => $id]);
-            }
-
             $comment->setPublicationDate(new \DateTime())
                 ->setUser($user)
-                ->setCenter($center)
-                ->setIsApproved(false);
+                ->setCenter($center);
+
+            //  Vérification automatique du contenu
+            if ($filter->containsForbiddenWords($comment->getContent())) {
+                $comment->setIsApproved(false);
+                $this->addFlash('danger', 'Votre commentaire contient des propos inappropriés. Il sera examiné par un administrateur.');
+            } else {
+                $comment->setIsApproved(true);
+                $this->addFlash('success', 'Votre commentaire a été ajouté avec succés !');
+            }
 
             $em->persist($comment);
             $em->flush();
 
-            $this->addFlash('success', 'Votre commentaire a été ajouté avec succès.');
             return $this->redirectToRoute('app_show_center', ['id' => $id]);
         }
 
+        // j'affiche seulement les commentaires approuvés
         $averageRating = $commentRepository->findAverageRatingByCenter($center);
-        $approvedComments = $center->getComments()->toArray();
+        $approvedComments = $commentRepository->findBy(
+            ['center' => $center, 'isApproved' => true],
+            ['publicationDate' => 'DESC']
+        );
 
         return $this->render('center/show.html.twig', [
             'center' => $center,
@@ -73,16 +78,14 @@ final class CenterController extends AbstractController
         ]);
     }
 
-
     #[Route('/center/{id}/comments', name: 'center_all_comments', requirements: ['id' => '\d+'])]
     public function allComments(
-        int                $id,
-        Request            $request,
-        CenterRepository   $centerRepository,
-        CommentRepository  $commentRepository,
+        int $id,
+        Request $request,
+        CenterRepository $centerRepository,
+        CommentRepository $commentRepository,
         PaginatorInterface $paginator
-    ): Response
-    {
+    ): Response {
         $center = $centerRepository->find($id);
 
         if (!$center) {
@@ -103,5 +106,3 @@ final class CenterController extends AbstractController
         ]);
     }
 }
-
-

@@ -1,7 +1,10 @@
 <div class="col-12 col-md-6 col-lg-4 mb-4">
     <div class="card h-100 center-card">
-        <img src="{{ asset(center.imagePath) }}" class="card-img-top center-card-img" alt="{{ center.name }}" />
-        <div class="card-body d-flex flex-column">
+        {% if center.imagePath %}
+            <img src="{{ asset(center.imagePath) }}" class="card-img-top center-card-img" alt="{{ center.name }}">
+        {% else %}
+            <img src="{{ asset('images/default.jpg') }}" class="card-img-top center-card-img" alt="Image par défaut">
+        {% endif %}        <div class="card-body d-flex flex-column">
             <h5 class="card-title center-title">{{ center.name }}</h5>
 
             <p class="card-text center-description">

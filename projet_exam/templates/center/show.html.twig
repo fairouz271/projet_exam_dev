@@ -2,74 +2,84 @@
 {% block title %}{{ center.name }}{% endblock %}
 
 {% block body %}
-<div class="center-details">
-    <h1>
-        {{ center.name }}
-        {% if app.user %}
-            <a href="{{ path('center_toggle_favorite', {id: center.id}) }}" class="btn btn-link p-0"
-               title="{{ app.user.favoriteCenters.contains(center) ? 'Retirer des favoris' : 'Ajouter aux favoris' }}">
-                <i class="fa{{ app.user.favoriteCenters.contains(center) ? 's' : 'r' }} fa-heart text-danger"></i>
+    <div class="center-details">
+        <h1>
+            {{ center.name }}
+            {% if app.user %}
+                <a href="{{ path('center_toggle_favorite', {id: center.id}) }}" class="btn btn-link p-0"
+                   title="{{ app.user.favoriteCenters.contains(center) ? 'Retirer des favoris' : 'Ajouter aux favoris' }}">
+                    <i class="fa{{ app.user.favoriteCenters.contains(center) ? 's' : 'r' }} fa-heart text-danger fs-1 "></i>
+                </a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn btn-link p-0">
+                    <i class="far fa-heart text-muted"></i>
+                </a>
+            {% endif %}
+        </h1>
+        <p>{{ center.description }}<br>
+            <strong> Avis :</strong>
+            {% if averageRating != null %}
+                {{ averageRating|number_format(1, '.', '') }} / 5
+            {% else %}
+                Il n'y a pas de notes encore !
+            {% endif %}
+        </p>
+
+        <div class="center-card">
+            {% include 'partials/_center-carousel.html.twig' with { center: center } %}    </div>
+
+
+        <ul class="list-group mb-4">
+            <li class="list-group-item d-flex justify-content-between">
+                <strong>Prix </strong> <span>{{ center.price }} €</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <strong>Horaires  </strong>
+                <div class="ms-3">
+                    <span>{{ center.schedules }}</span>
+                    </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <strong>Activities  </strong> <span>
+                {% for activity in center.activities %}
+                  -  {{ activity.name }} <br>
+                {% endfor %}
+            </span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <strong>Téléphone </strong> <span>{{ center.phoneNumber }}</span>
+            </li>
+        </ul>
+
+
+        <h2 class="mt-4">Commentaires</h2>
+        <div class="row">
+
+            {% for comment in comments|slice(0, 3) %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    {% include 'center/_comment_card.html.twig' with { comment: comment } %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-end">
+            <a href="{{ path('center_all_comments', {id: center.id}) }}" class="btn btn-outline-primary">
+                Voir tous les commentaires
             </a>
-        {% else %}
-            <a href="{{ path('app_login') }}" class="btn btn-link p-0">
-                <i class="far fa-heart text-muted"></i>
-            </a>
-        {% endif %}
-    </h1>
-    <p>{{ center.description }}<br>
-        <strong> Avis :</strong>
-        {% if averageRating != null %}
-            {{ averageRating|number_format(1, '.', '') }} / 5
-        {% else %}
-            Il n'y a pas de notes encore !
-        {% endif %}
-    </p>
+        </div>
 
-    <div class="center-card">
-        {% include 'partials/_center-carousel.html.twig' with { center: center } %}    </div>
-
-
-    <ul class="list-group mb-4">
-        <li class="list-group-item d-flex justify-content-between">
-            <strong>Prix :</strong> <span>{{ center.price }} €</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between">
-            <strong>Horaires :</strong> <span>{{ center.schedules }}</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between">
-            <strong>Téléphone :</strong> <span>{{ center.phoneNumber }}</span>
-        </li>
-    </ul>
-
-
-    <h2 class="mt-4">Commentaires</h2>
-    <div class="row">
-
-        {% for comment in comments|slice(0, 3) %}
-            <div class="col-md-6 col-lg-4 mb-4">
-                {% include 'center/_comment_card.html.twig' with { comment: comment } %}
-            </div>
-        {% endfor %}
-    </div>
-    <div class="text-end">
-        <a href="{{ path('center_all_comments', {id: center.id}) }}" class="btn btn-outline-primary">
-            Voir tous les commentaires
-        </a>
-    </div>
-
-    <h2 class="mt-4">Donner votre avis !</h2>
-    {{ form_start(form) }}
+        <h2 class="mt-4">Donner votre avis !</h2>
+        {{ form_start(form) }}
         {{ form_row(form.content) }}
         {{ form_row(form.rating) }}
         {{ form_row(form.submit) }}
-    {{ form_end(form) }}
+        {{ form_end(form) }}
 
-    {% if not app.user %}
-        <p><a href="{{ path('app_login') }}">Connectez-vous</a> pour laisser un commentaire.</p>
-    {% endif %}
+        {% if not app.user %}
+            <p><a href="{{ path('app_login') }}">Connectez-vous</a> pour laisser un commentaire.</p>
+        {% endif %}
 
-    <a href="{{ path('app_home') }}" class="btn btn-secondary mt-3">Retour</a>
-</div>
+        <a href="{{ path('app_home') }}" class="btn btn-secondary mt-3">Retour</a>
+    </div>
 {% endblock %}
 
 

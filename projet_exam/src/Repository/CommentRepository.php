@@ -21,6 +21,7 @@ class CommentRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->where('c.center = :center')
+            ->andWhere('c.isApproved = true')
             ->setParameter('center', $center)
             ->orderBy('c.publicationDate', 'DESC')
             ->getQuery();

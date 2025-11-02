@@ -22,7 +22,9 @@
     {% include 'partials/_header.html.twig' %}
     </header>
     <main class="flex-grow">
-
+        {% if app.user %}
+        <span class="navbar-text p-2 me-3">Bonjour  {{ app.user.firstName }} !</span>
+        {% endif %}
         {% for label, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">

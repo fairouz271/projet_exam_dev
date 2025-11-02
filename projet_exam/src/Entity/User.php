@@ -8,7 +8,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Entity\Center; // ⚠️ à adapter si ton entité Center n’est pas dans App\Entity
+use App\Entity\Center;
+use App\Entity\Comment;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -21,40 +22,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $firstName = null;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $familyName = null;
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    public function getFamilyName(): ?string
-    {
-        return $this->familyName;
-    }
-
-    public function setFamilyName(?string $familyName): void
-    {
-        $this->familyName = $familyName;
-    }
-
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
     #[ORM\ManyToMany(targetEntity: Center::class, inversedBy: 'users')]
     private Collection $favoriteCenters;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->favoriteCenters = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -72,6 +62,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->firstName = $firstName;
     }
 
+    public function getFamilyName(): ?string
+    {
+        return $this->familyName;
+    }
+
+    public function setFamilyName(?string $familyName): void
+    {
+        $this->familyName = $familyName;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -80,7 +80,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -123,7 +122,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->favoriteCenters->contains($center)) {
             $this->favoriteCenters->add($center);
         }
-
         return $this;
     }
 
@@ -133,16 +131,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function __serialize(): array
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
     {
-        $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
-        return $data;
+        return $this->comments;
     }
 
-    #[\Deprecated]
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
+        return $this;
+    }
+
     public function eraseCredentials(): void
     {
-        // @deprecated, to be removed when upgrading to Symfony 8
+        // Rien à effacer pour le moment
     }
 }
