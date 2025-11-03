@@ -49,12 +49,4 @@ class Image
     {
         $this->center = $center;
     }
-
-
-
-
-
-
-
-
 }

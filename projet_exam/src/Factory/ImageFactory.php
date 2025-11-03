@@ -10,11 +10,7 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
  */
 final class ImageFactory extends PersistentProxyObjectFactory
 {
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
-     *
-     * @todo inject services if required
-     */
+
     public function __construct()
     {
     }
@@ -24,11 +20,6 @@ final class ImageFactory extends PersistentProxyObjectFactory
         return Image::class;
     }
 
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
-     */
     protected function defaults(): array|callable
     {
         return [
@@ -37,13 +28,11 @@ final class ImageFactory extends PersistentProxyObjectFactory
         ];
     }
 
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-     */
+
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Image $image): void {})
+
         ;
     }
 }

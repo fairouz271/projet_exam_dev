@@ -73,7 +73,7 @@ class Center
         $this->images = new ArrayCollection();
     }
 
-    // -------------------- Getters / Setters --------------------
+
 
     public function getId(): ?int
     {

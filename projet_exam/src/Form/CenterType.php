@@ -30,7 +30,7 @@ class CenterType extends AbstractType
             ->add('description', TextareaType::class, ['label' => 'Description', 'required' => false])
             ->add('imagePath', FileType::class, [
                 'label' => 'Image principale',
-                'mapped' => false, // le fichier n’est pas directement lié à la propriété
+                'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new File([

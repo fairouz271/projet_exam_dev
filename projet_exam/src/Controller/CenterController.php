@@ -48,7 +48,6 @@ final class CenterController extends AbstractController
                 ->setUser($user)
                 ->setCenter($center);
 
-            //  Vérification automatique du contenu
             if ($filter->containsForbiddenWords($comment->getContent())) {
                 $comment->setIsApproved(false);
                 $this->addFlash('danger', 'Votre commentaire contient des propos inappropriés. Il sera examiné par un administrateur.');
@@ -63,7 +62,6 @@ final class CenterController extends AbstractController
             return $this->redirectToRoute('app_show_center', ['id' => $id]);
         }
 
-        // j'affiche seulement les commentaires approuvés
         $averageRating = $commentRepository->findAverageRatingByCenter($center);
         $approvedComments = $commentRepository->findBy(
             ['center' => $center, 'isApproved' => true],

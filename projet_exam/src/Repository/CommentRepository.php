@@ -28,12 +28,15 @@ class CommentRepository extends ServiceEntityRepository
     }
         public function findAverageRatingByCenter(Center $center): float
         {
-            return $this->createQueryBuilder('r')
+           $avg =  $this->createQueryBuilder('r')
                 ->select('AVG(r.rating) as averageRating')
                 ->Where('r.center = :center')
                 ->setParameter('center', $center)
                 ->getQuery()
-                ->getSingleScalarResult()
-            ;
+                ->getSingleScalarResult();
+
+                 return (float) ($avg ?? 0.0);
+
         }
+
 }

@@ -6,7 +6,9 @@ use App\Entity\Center;
 use App\Entity\Adress;
 use App\Form\CenterType;
 use App\Repository\CenterRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,13 +36,11 @@ class AdminCenterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Création automatique de l'adresse à partir des champs non mappés
-            $adress = new Adress();
-            $adress->setAdress($form->get('adress_adress')->getData());
-            $adress->setLongitude($form->get('adress_longitude')->getData());
-            $adress->setAltitude($form->get('adress_altitude')->getData());
+            $form->get('adress')->get('adress')->getData();
+            $form->get('adress')->get('longitude')->getData();
+            $form->get('adress')->get('altitude')->getData();
 
-            $center->setAdress($adress);
+
             $imageFile = $form->get('imagePath')->getData();
             if ($imageFile) {
                 $newFilename = uniqid('center_') . '.' . $imageFile->guessExtension();
@@ -51,7 +51,6 @@ class AdminCenterController extends AbstractController
                 $center->setImagePath($newFilename);
             }
 
-            // Persistance : cascade persist sur Center s'occupe de l'adresse
             $em->persist($center);
             $em->flush();
 
@@ -67,10 +66,18 @@ class AdminCenterController extends AbstractController
 
 
     #[Route('/{id}', name: 'admin_center_show')]
-    public function show(Center $center): Response
+    public function show(Center $center, CommentRepository $commentRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $query= $commentRepository->findByCenterQuery( $center);
+
+        $comments = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            6
+        );
         return $this->render('admin_center/show_center.html.twig', [
             'center' => $center,
+            'comments' => $comments,
         ]);
     }
 
@@ -85,17 +92,15 @@ class AdminCenterController extends AbstractController
             $imageFile = $form->get('imagePath')->getData();
 
             if ($imageFile) {
-                // Génération d’un nom unique
+
                 $newFilename = uniqid('center_') . '.' . $imageFile->guessExtension();
 
-                // Déplacement du fichier dans le dossier uploads/centers
                 $imageFile->move(
                     $this->getParameter('centers_directory'),
                     $newFilename
                 );
 
-                // Mise à jour du nom du fichier dans l'entité
-                $center->setImagePath($newFilename);
+               $center->setImagePath($newFilename);
             }
 
 

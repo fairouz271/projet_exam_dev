@@ -3,42 +3,65 @@
 {% block title %}Admin - Détails du centre{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <a class="default-link d-inline-block my-2" href="{{ path('admin_center_index') }}">Retour</a>
-        <h1 class="text-center my-2">{{ center.name }}</h1>
+    <div class="container my-4">
 
-        <div class="d-flex gap-5 align-items-start my-4">
-            {% if center.imagePath %}
-                <img src="{{ asset('uploads/centers/' ~ center.imagePath) }}" alt="{{ center.name }}" style="max-width:300px; border-radius:10px;">
-            {% endif %}
-            <div>
-                <p>Téléphone : {{ center.phoneNumber }}</p>
-                <p> Prix : {{ center.price ?? 'Non renseigné' }}€</p>
-                <p><strong>Horaires :</strong> {{ center.schedules }}</p>
-                <p>{{ center.description|raw }}</p>
+        <a class="btn btn-secondary mb-3" href="{{ path('admin_center_index') }}">Retour</a>
+
+        <h1 class="text-center mb-4">{{ center.name }}</h1>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="mb-3">
+                    <p>Téléphone : {{ center.phoneNumber }}</p>
+                    <p>Prix : {{ center.price ?? 'Non renseigné' }}€</p>
+                    <p>Horaires : {{ center.schedules }}</p>
+                </div>
+
+                {% if center.imagePath %}
+                    <div class="text-center mb-4">
+                        <img src="{{ asset('uploads/centers/' ~ center.imagePath) }}"
+                             alt="{{ center.name }}"
+                             class="img-fluid rounded">
+                    </div>
+                {% endif %}
+
+                <div class="mb-4">
+                    <p>Déscription</p>
+                    <p>{{ center.description|raw }}</p>
+                </div>
+
+                <div class="mb-4">
+                    <p>Activités</p>
+                    {% if center.activities|length > 0 %}
+                        {% for activity in center.activities %}
+                            <span class="badge bg-light text-dark me-1 mb-1">{{ activity.name }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">Aucune activité</p>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <p>Commentaires</p>
+                    <ul class="list-group bg-white">
+                        {% for comment in comments %}
+                            <li class="list-group-item mb-2">
+                                <p>{{ comment.content }}</p>
+                                <small class="text-muted">Note : {{ comment.rating }}/5</small>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">Aucun commentaire</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="mt-3">
+                    {{ knp_pagination_render(comments) }}
+                </div>
+
             </div>
         </div>
 
-        <ul class="my-4 d-flex gap-3 flex-wrap p-0">
-            {% for activity in center.activities %}
-                <li class="badge text-bg-info">
-                    {% for activity in center.activities %}
-                        -  {{ activity.name }} <br>
-                    {% endfor %}</li>
-            {% else %}
-                <li class="text-muted">Aucune activité</li>
-            {% endfor %}
-        </ul>
-
-        <ul class="list-group my-4">
-            <p>Commentaires :</p>
-            {% for comment in center.comments %}
-                <li class="list-group-item list-group-item-dark">
-                    {{ comment.content }} <br>Note : {{ comment.rating }}/5
-                </li>
-            {% else %}
-                <li class="list-group-item">Aucun commentaire</li>
-            {% endfor %}
-        </ul>
     </div>
 {% endblock %}

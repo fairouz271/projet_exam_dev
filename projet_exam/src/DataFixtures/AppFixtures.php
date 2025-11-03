@@ -15,8 +15,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
+
     AdressFactory::createMany(10);
 
     ActivityFactory::createOne(['name' => 'Parcours aventure']);
